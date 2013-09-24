@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#Force file syncronization and lock writes
-mongo admin --eval "printjson(db.fsyncLock())"
+
 
 MONGODUMP_PATH="/usr/bin/mongodump"
 MONGO_HOST="localhost" #replace with your server ip
@@ -9,6 +8,9 @@ MONGO_PORT="27202"
 MONGO_DATABASE="dbname" #replace with your database name
 MONGO_USERNAME="user"
 MONGO_PASSWORD="password"
+
+#Force file syncronization and lock writes
+mongo admin --port $MONGO_PORT --eval "printjson(db.fsyncLock())"
 
 TIMESTAMP=`date +%F-%H%M`
 S3_BUCKET_NAME="your ip" #replace with your bucket name on Amazon S3
@@ -29,4 +31,4 @@ rm mongodb-$HOSTNAME-$TIMESTAMP.tar
 rm -r mongodb-$HOSTNAME-$TIMESTAMP
 
 #Unlock database writes
-mongo admin --eval "printjson(db.fsyncUnlock())"
+mongo admin --port $MONGO_PORT --eval "printjson(db.fsyncUnlock())"
