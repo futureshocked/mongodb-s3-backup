@@ -24,7 +24,9 @@ tar cf mongodb-$HOSTNAME-$TIMESTAMP.tar mongodb-$HOSTNAME-$TIMESTAMP
 # Upload to S3
 s3cmd put mongodb-$HOSTNAME-$TIMESTAMP.tar s3://$S3_BUCKET_NAME/$S3_BUCKET_PATH/mongodb-$HOSTNAME-$TIMESTAMP.tar
 
-# Remove file from local
+# Remove backup file and directory from local
 rm mongodb-$HOSTNAME-$TIMESTAMP.tar
+rm -r mongodb-$HOSTNAME-$TIMESTAMP
+
 #Unlock database writes
 mongo admin --eval "printjson(db.fsyncUnlock())"
